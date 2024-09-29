@@ -42,17 +42,36 @@ class User(AbstractUser):
 
 
 class Payment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name='Оплативший пользователь', blank=True, null=True)
-    pay_date = models.DateField(verbose_name='дата оплаты', blank=True, null=True)
-    pay_course = models.ForeignKey(Course, on_delete=models.SET_NULL, verbose_name='оплаченный курс', blank=True, null=True)
-    pay_lesson = models.ForeignKey(Lesson, on_delete=models.SET_NULL, verbose_name='оплаченный урок', blank=True, null=True)
-    price = models.IntegerField(verbose_name='сумма оплаты', blank=True, null=True)
-    pay_type = models.CharField(max_length=100, blank=True, null=True, verbose_name='способ оплаты')
+    user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        verbose_name="Оплативший пользователь",
+        blank=True,
+        null=True,
+    )
+    pay_date = models.DateField(verbose_name="дата оплаты", blank=True, null=True)
+    pay_course = models.ForeignKey(
+        Course,
+        on_delete=models.SET_NULL,
+        verbose_name="оплаченный курс",
+        blank=True,
+        null=True,
+    )
+    pay_lesson = models.ForeignKey(
+        Lesson,
+        on_delete=models.SET_NULL,
+        verbose_name="оплаченный урок",
+        blank=True,
+        null=True,
+    )
+    price = models.IntegerField(verbose_name="сумма оплаты", blank=True, null=True)
+    pay_type = models.CharField(
+        max_length=100, blank=True, null=True, verbose_name="способ оплаты"
+    )
 
     class Meta:
         verbose_name = "Платеж"
         verbose_name_plural = "Платежи"
 
     def __str__(self):
-        return f'{self.price} - {self.user} - {self.pay_date}'
-
+        return f"{self.price} - {self.user} - {self.pay_date}"

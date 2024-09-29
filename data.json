@@ -1,5 +1,44 @@
 [
   {
+    "model": "admin.logentry",
+    "pk": 1,
+    "fields": {
+      "action_time": "2024-09-29T21:54:57.264Z",
+      "user": 5,
+      "content_type": 3,
+      "object_id": "1",
+      "object_repr": "managers",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 2,
+    "fields": {
+      "action_time": "2024-09-29T22:01:13.963Z",
+      "user": 5,
+      "content_type": 6,
+      "object_id": "6",
+      "object_repr": "test5@test.ru",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Groups\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 3,
+    "fields": {
+      "action_time": "2024-09-29T22:03:35.967Z",
+      "user": 5,
+      "content_type": 3,
+      "object_id": "1",
+      "object_repr": "moderators",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Name\"]}}]"
+    }
+  },
+  {
     "model": "auth.permission",
     "pk": 1,
     "fields": {
@@ -324,6 +363,14 @@
     }
   },
   {
+    "model": "auth.group",
+    "pk": 1,
+    "fields": {
+      "name": "moderators",
+      "permissions": []
+    }
+  },
+  {
     "model": "contenttypes.contenttype",
     "pk": 1,
     "fields": {
@@ -396,6 +443,14 @@
     }
   },
   {
+    "model": "sessions.session",
+    "pk": "r3cpur04vdd2cgn5yl8b56xhxlfn5nl6",
+    "fields": {
+      "session_data": ".eJxVjDsOwjAQBe_iGlleNnZ2Kek5g-XPGgdQIsVJhbg7iZQC2jcz7618WJfq1yazH7K6KKtOv1sM6SnjDvIjjPdJp2lc5iHqXdEHbfo2ZXldD_fvoIZWt7pAKoDGsjhH1Ge0DiihYTqHDgih525jzEhsMXWBBGORxCDFgGT1-QKzcjcO:1sv1s5:DvOJ3XcNX7MTYc_zDJh5CJZSMMgozWQ4RnfaS-TEURI",
+      "expire_date": "2024-10-13T21:54:29.295Z"
+    }
+  },
+  {
     "model": "users.user",
     "pk": 1,
     "fields": {
@@ -436,6 +491,68 @@
     }
   },
   {
+    "model": "users.user",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$wRey6JFGriNLA10VZTe7Sn$hivEa8Wa+A+TxO0q65PstUwBg1IDLADFDAPJzvEJjUs=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-09-27T21:44:33.572Z",
+      "email": "user_test44@test.ru",
+      "phone": null,
+      "city": null,
+      "avatar": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 5,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$nLfTh5xeYfQKrsqh1Gi4z2$xB64/Lzxw2p2+TL/vscmM9Hql0q/warjr9J6QjFhLrg=",
+      "last_login": "2024-09-29T21:54:29.286Z",
+      "is_superuser": true,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2024-09-29T21:53:32.860Z",
+      "email": "admin1@admin1.ru",
+      "phone": null,
+      "city": null,
+      "avatar": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 6,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$aKIcxG3xsWvBaSOwX5fq8T$XdK7ToHk1po6JNrkDYifSiZcSllvZXw12GcFS+y4fyY=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-09-29T22:00:17Z",
+      "email": "test5@test.ru",
+      "phone": null,
+      "city": null,
+      "avatar": "",
+      "groups": [
+        1
+      ],
+      "user_permissions": []
+    }
+  },
+  {
     "model": "users.payment",
     "pk": 1,
     "fields": {
@@ -465,7 +582,8 @@
     "fields": {
       "name": "python course",
       "preview": "",
-      "description": null
+      "description": "test_descr",
+      "owner": null
     }
   },
   {
@@ -474,7 +592,28 @@
     "fields": {
       "name": "java course",
       "preview": "",
-      "description": null
+      "description": null,
+      "owner": null
+    }
+  },
+  {
+    "model": "materials.course",
+    "pk": 4,
+    "fields": {
+      "name": "go course",
+      "preview": "",
+      "description": null,
+      "owner": null
+    }
+  },
+  {
+    "model": "materials.course",
+    "pk": 5,
+    "fields": {
+      "name": "go course",
+      "preview": "",
+      "description": null,
+      "owner": 5
     }
   },
   {
@@ -485,7 +624,8 @@
       "description": null,
       "preview": "",
       "video_url": null,
-      "course": 2
+      "course": 2,
+      "owner": null
     }
   },
   {
@@ -496,7 +636,8 @@
       "description": null,
       "preview": "",
       "video_url": null,
-      "course": null
+      "course": null,
+      "owner": null
     }
   },
   {
@@ -507,7 +648,8 @@
       "description": null,
       "preview": "",
       "video_url": null,
-      "course": 3
+      "course": 3,
+      "owner": null
     }
   },
   {
@@ -518,7 +660,20 @@
       "description": null,
       "preview": "",
       "video_url": null,
-      "course": 2
+      "course": 2,
+      "owner": null
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 6,
+    "fields": {
+      "name": "go lesson1",
+      "description": null,
+      "preview": "",
+      "video_url": null,
+      "course": 5,
+      "owner": 5
     }
   }
 ]
