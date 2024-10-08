@@ -28,7 +28,8 @@ class CourseDetailSerializer(ModelSerializer):
         return Lesson.objects.filter(course=course.pk).count()
 
     def get_subscription_sign(self, course):
-        return Subscription.objects.filter(course=course.pk).exists()
+        user_pk = self.context["request"].user.pk
+        return Subscription.objects.filter(course=course.pk, user=user_pk).exists()
 
     class Meta:
         model = Course
