@@ -117,3 +117,6 @@ class SubscribeApiView(APIView):
         return Response({"message": message})
 
 
+class SubscribeListApiView(ListAPIView):
+    queryset = Subscription.objects.all()
+    serializer_class = SubscribeSerializer
