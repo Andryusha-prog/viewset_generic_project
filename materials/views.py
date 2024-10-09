@@ -1,6 +1,9 @@
 from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import filters, status
 from rest_framework.generics import (CreateAPIView, DestroyAPIView,
                                      ListAPIView, RetrieveAPIView,
                                      UpdateAPIView)
@@ -11,7 +14,9 @@ from rest_framework.viewsets import ModelViewSet
 from materials.models import Course, Lesson, Subscription
 from materials.paginators import ListViewPaginator
 from materials.serializers import (CourseDetailSerializer, CourseSerializer,
-                                   LessonSerializer, PaymentSerializer, SubscribeSerializer)
+                                   LessonSerializer, PaymentSerializer,
+                                   SubscribeSerializer)
+from materials.services import create_stripe_price, create_stripe_session
 from users.models import Payment
 from users.permissions import IsModerators, IsOwner
 
@@ -35,12 +40,10 @@ class CourseViewSet(ModelViewSet):
             self.permission_classes = (~IsModerators,)
         return super().get_permissions()
 
-
     def perform_create(self, serializer):
         course = serializer.save()
         course.owner = self.request.user
         course.save()
-
 
 
 class LessonCreateApiView(CreateAPIView):
@@ -95,24 +98,68 @@ class PaymentUpdateApiView(UpdateAPIView):
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
 
+
+class PaymentCreateApiView(CreateAPIView):
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
+
+    def perform_create(self, serializer):
+        payment = serializer.save(user=self.request.user)
+        if "course" in self.request.data:
+            course = Course.objects.get(pk=self.request.data["course"])
+            payment.pay_course = course
+
+        if "lesson" in self.request.data:
+            lesson = Lesson.objects.get(pk=self.request.data["lesson"])
+            payment.pay_lesson = lesson
+
+        price = create_stripe_price(payment.price)
+        session_id, payment_link = create_stripe_session(price)
+        payment.session_id = session_id
+        payment.link = payment_link
+        payment.save()
+
+
+
 class SubscribeApiView(APIView):
     queryset = Subscription.objects.all()
     serializer_class = SubscribeSerializer
 
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=["course", "user"],
+            properties={
+                "course": openapi.Schema(type=openapi.TYPE_INTEGER),
+                "user": openapi.Schema(type=openapi.TYPE_INTEGER),
+            },
+        ),
+        responses={
+            status.HTTP_200_OK: openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    "message": openapi.Schema(
+                        type=openapi.TYPE_STRING,
+                        description="подписка добавлена или подписка удалена",
+                    )
+                },
+            )
+        },
+    )
     def post(self, *args, **kwargs):
         user = self.request.user
-        course_id = self.request.data.get('course')
+        course_id = self.request.data.get("course")
         course_item = get_object_or_404(Course, pk=course_id)
         subs_item = Subscription.objects.filter(user=user, course=course_item)
 
         # Если подписка у пользователя на этот курс есть - удаляем ее
         if subs_item.exists():
             subs_item.delete()
-            message = 'подписка удалена'
+            message = "подписка удалена"
         # Если подписки у пользователя на этот курс нет - создаем ее
         else:
             Subscription.objects.create(user=user, course=course_item)
-            message = 'подписка добавлена'
+            message = "подписка добавлена"
         # Возвращаем ответ в API
         return Response({"message": message})
 

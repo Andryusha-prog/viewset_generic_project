@@ -16,7 +16,7 @@ class LessonSerializer(ModelSerializer):
     class Meta:
         model = Lesson
         fields = "__all__"
-        validators = [UrlCustomValidator(field='video_url')]
+        validators = [UrlCustomValidator(field="video_url")]
 
 
 class CourseDetailSerializer(ModelSerializer):
@@ -33,13 +33,20 @@ class CourseDetailSerializer(ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ("name", "description", "count_lesson_on_course", "lesson", "subscription_sign")
+        fields = (
+            "name",
+            "description",
+            "count_lesson_on_course",
+            "lesson",
+            "subscription_sign",
+        )
 
 
 class PaymentSerializer(ModelSerializer):
     class Meta:
         model = Payment
         fields = "__all__"
+
 
 class SubscribeSerializer(ModelSerializer):
     class Meta:

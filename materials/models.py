@@ -22,7 +22,11 @@ class Course(models.Model):
         help_text="Введите описание курса",
     )
     owner = models.ForeignKey(
-        AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True, verbose_name="Создатель"
+        AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        verbose_name="Создатель",
     )
 
     class Meta:
@@ -66,7 +70,11 @@ class Lesson(models.Model):
         null=True,
     )
     owner = models.ForeignKey(
-        AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True, verbose_name="Создатель"
+        AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        verbose_name="Создатель",
     )
 
     class Meta:
@@ -78,8 +86,16 @@ class Lesson(models.Model):
 
 
 class Subscription(models.Model):
-    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='Пользователь')
-    course = models.ForeignKey(Course, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='Курс')
+    user = models.ForeignKey(
+        AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        verbose_name="Пользователь",
+    )
+    course = models.ForeignKey(
+        Course, on_delete=models.SET_NULL, blank=True, null=True, verbose_name="Курс"
+    )
 
     class Meta:
         verbose_name = "Подписка"
@@ -87,4 +103,3 @@ class Subscription(models.Model):
 
     def __str__(self):
         return f"{self.user} - {self.course}"
-
