@@ -17,7 +17,8 @@ from materials.serializers import (CourseDetailSerializer, CourseSerializer,
                                    LessonSerializer, PaymentSerializer,
                                    SubscribeSerializer)
 from materials.services import create_stripe_price, create_stripe_session
-from users.models import Payment
+from materials.task import send_mail_info_update
+from users.models import Payment, User
 from users.permissions import IsModerators, IsOwner
 
 
@@ -45,6 +46,13 @@ class CourseViewSet(ModelViewSet):
         course.owner = self.request.user
         course.save()
 
+    def perform_update(self, serializer):
+        data = serializer.save()
+        course_id = data.pk
+        users_pk = [x['user'] for x in Subscription.objects.values('user').filter(course=course_id)]
+        users_mail = [mail['email'] for mail in User.objects.values('email').filter(pk__in=users_pk)]
+        send_mail_info_update(users_mail, data.name)
+        data.save()
 
 class LessonCreateApiView(CreateAPIView):
     queryset = Lesson.objects.all()
